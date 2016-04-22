@@ -1,0 +1,15 @@
+PODS:
+  - OHAttributedStringAdditions (1.3.0):
+    - OHAttributedStringAdditions/Base (= 1.3.0)
+    - OHAttributedStringAdditions/UILabel (= 1.3.0)
+  - OHAttributedStringAdditions/Base (1.3.0)
+  - OHAttributedStringAdditions/UILabel (1.3.0):
+    - OHAttributedStringAdditions/Base
+
+DEPENDENCIES:
+  - OHAttributedStringAdditions (~> 1.3)
+
+SPEC CHECKSUMS:
+  OHAttributedStringAdditions: d810cff43f5dd0054df62de2e7bf472c9a2b9d3e
+
+COCOAPODS: 0.39.0
