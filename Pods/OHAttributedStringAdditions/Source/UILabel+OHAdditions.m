@@ -49,6 +49,7 @@
     CGRect wholeTextRect = [layoutManager boundingRectForGlyphRange:glyphRange
                                                     inTextContainer:textContainer];
     point.y -= (CGRectGetHeight(self.bounds)-CGRectGetHeight(wholeTextRect))/2;
+    NSLog(@"wholeTextRect %@", NSStringFromCGRect(wholeTextRect));
 
     // Bail early if point outside the whole text bounding rect
     if (!CGRectContainsPoint(wholeTextRect, point)) return NSNotFound;

@@ -10,7 +10,7 @@
 #import <OHAttributedStringAdditions/OHAttributedStringAdditions.h>
 
 @interface ViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *hogeLabel;
+@property (weak, nonatomic) IBOutlet UITextView *hogeTextView;
 
 @end
 
@@ -18,7 +18,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[self class] setLinkDecorationTo:self.hogeLabel];
+    NSMutableAttributedString *hoge = [[self class] setLinkDecorationTo:self.hogeTextView];
+    NSLog(@"HOGEHOGE");
+    
+    
+    
+    
+    
+    self.hogeTextView.attributedText = hoge;
+    [[self class] setLinkDecorationTo:self.hogeTextView];
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -27,23 +35,15 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)didTapLabel:(UIGestureRecognizer *)recognizer{
-        CGPoint tappedPoint = [recognizer locationInView:self.hogeLabel];
-    NSURL *tappedURL    = [[self class] URLWithLabelTappedPosition:tappedPoint label:self.hogeLabel];
-    // !!! URLをタップしたらtappedURLにURLが入っていてほしい !!!
-    // しかし入ってない。
-    NSLog(@"TAP URL %@", tappedURL);
-}
-
 /**
  *  テキストをリンク色に装飾する
  */
-+ (void) setLinkDecorationTo:(UILabel *)label {
-    NSMutableAttributedString *attributedText = [[self class]linkElementsAttributedStringWithTargetString:label.text].mutableCopy;
-    [attributedText setFont:label.font];
-    [attributedText setTextColor:label.textColor];
-    label.attributedText = attributedText;
++ (NSMutableAttributedString *) setLinkDecorationTo:(UITextView *)textView{
+    NSMutableAttributedString *attributedText = [[self class]linkElementsAttributedStringWithTargetString:textView.text].mutableCopy;
+    [attributedText setFont:textView.font];
+    return attributedText;
 }
+
 + (NSAttributedString *) linkElementsAttributedStringWithTargetString:(NSString *)string
 {
     NSMutableAttributedString *attributedString = [NSMutableAttributedString attributedStringWithString:string];
@@ -68,10 +68,14 @@
 + (NSURL *) URLWithLabelTappedPosition:(CGPoint)tappedPosition
                                  label:(UILabel *)label
 {
+    NSLog(@"--------------------------------");
+    NSLog(@"LABEL FRAME %@", NSStringFromCGRect(label.frame));
+
     // MEMO: このcharacterIndexAtPoint　が NSNotFound(NSIntegerMax)を返してしまうために
     // URLを取得することが出来ていない。
     NSUInteger tappedCharNumber = [label characterIndexAtPoint:tappedPosition];
     
+    NSLog(@"Tap Char Number %@", @(tappedCharNumber));
     
     if ( tappedCharNumber != NSNotFound ) {
         NSURL *tappedURL = [label.attributedText URLAtIndex:tappedCharNumber effectiveRange:NULL];
@@ -80,6 +84,12 @@
         }
     }
     return nil;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)url inRange:(NSRange)characterRange
+{
+    NSLog(@"URL %@", url.absoluteString);
+    return NO;
 }
 
 /**
@@ -92,5 +102,6 @@
                             range:NSMakeRange(0,[text length])
             ];
 }
+
 
 @end
